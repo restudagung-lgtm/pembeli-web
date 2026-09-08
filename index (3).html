@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lapak Alun-Alun — Pesan dari Meja</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+<!--
+  Urutan file di bawah PENTING (bergantung satu sama lain):
+  1. firebase-config.js -> koneksi ke Firestore
+  2. storage.js          -> sGet/sSet/sList/sDel
+  3. utils.js             -> fungsi bantu umum
+  4. site-config.js       -> alamat web PENJUAL (yang terpisah)
+  5. customer.js          -> semua tampilan & aksi pembeli
+  6. app.js               -> routing & penyala aplikasi (HARUS terakhir)
+-->
+<script src="firebase-config.js"></script>
+<script src="storage.js"></script>
+<script src="utils.js"></script>
+<script src="site-config.js"></script>
+<script src="customer.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
