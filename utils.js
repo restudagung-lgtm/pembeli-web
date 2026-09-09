@@ -1,3 +1,8 @@
+// ======================================================================
+// 🟢 WEB PEMBELI  (folder: pembeli/)
+// File: utils.js
+// ======================================================================
+
 /*
   utils.js
   --------
@@ -39,6 +44,20 @@ function circularDist(a, b, total){
   return Math.min(diff, total - diff);
 }
 
+// Toggle input password antara tersembunyi (••••) dan terlihat (teks biasa).
+// Dipakai lewat markup: <div class="pwd-wrap"><input .../><button class="pwd-toggle" onclick="togglePwd('id', this)">Lihat</button></div>
+function togglePwd(id, btn){
+  const input = document.getElementById(id);
+  if(!input) return;
+  if(input.type === 'password'){
+    input.type = 'text';
+    btn.textContent = 'Sembunyikan';
+  } else {
+    input.type = 'password';
+    btn.textContent = 'Lihat';
+  }
+}
+
 // Menggambar denah alun-alun sederhana dengan meja-meja tersusun melingkar,
 // menyorot satu nomor meja tertentu.
 function tableMapSVG(highlight, total){
@@ -62,3 +81,4 @@ function tableMapSVG(highlight, total){
     ${dots}
   </svg>`;
 }
+
