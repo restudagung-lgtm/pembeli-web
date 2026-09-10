@@ -1,13 +1,13 @@
 // ======================================================================
-// 🟢 WEB PEMBELI  (folder: pembeli/)
+// Fungsi bantu bersama (dipakai oleh customer.js, seller.js, admin.js)
 // File: utils.js
 // ======================================================================
 
 /*
   utils.js
   --------
-  Fungsi bantu kecil yang dipakai bersama oleh customer.js dan seller.js.
-  Tidak ada logika tampilan/alur di sini, murni fungsi bantu.
+  Fungsi bantu kecil yang dipakai bersama. Tidak ada logika tampilan/alur
+  di sini, murni fungsi bantu.
 */
 
 const STATUS_FLOW = ['pending','diproses','diantar','selesai'];
@@ -82,3 +82,72 @@ function tableMapSVG(highlight, total){
   </svg>`;
 }
 
+/*
+  resizeImageToBlob(file, maxDim, quality)
+  -----------------------------------------
+  Ambil file foto dari <input type="file">, kecilkan ke maksimum "maxDim" px
+  di sisi terpanjang, lalu kembalikan sebagai Blob JPEG terkompresi. Dipakai
+  sebelum unggah supaya foto tidak berat & cepat dimuat di HP pembeli.
+*/
+function resizeImageToBlob(file, maxDim, quality){
+  maxDim = maxDim || 1000;
+  quality = quality || 0.78;
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = e => { img.src = e.target.result; };
+    reader.onerror = reject;
+    img.onload = () => {
+      let { width, height } = img;
+      if(width > height && width > maxDim){ height = Math.round(height * (maxDim/width)); width = maxDim; }
+      else if(height > maxDim){ width = Math.round(width * (maxDim/height)); height = maxDim; }
+      const canvas = document.createElement('canvas');
+      canvas.width = width; canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('Gagal memproses gambar')), 'image/jpeg', quality);
+    };
+    img.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+/*
+  previewImageInput(inputEl, imgElId)
+  -------------------------------------
+  Tampilkan pratinjau langsung saat pengguna memilih file foto, dengan
+  menempelkan data URL ke elemen <img id="imgElId">. Murni untuk UX di form.
+*/
+function previewImageInput(inputEl, imgElId){
+  const file = inputEl.files && inputEl.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById(imgElId);
+    if(img){ img.src = e.target.result; img.style.display = 'block'; }
+  };
+  reader.readAsDataURL(file);
+}
+
+/*
+  downloadImageURL(url, filename)
+  ---------------------------------
+  Unduh gambar dari sebuah URL (misalnya QR code) sebagai file ke perangkat
+  pengguna. Coba lewat fetch+blob dulu (biar langsung ke folder unduhan
+  dengan nama file yang rapi); kalau gagal (CORS dsb), buka di tab baru
+  sebagai jalan keluar supaya pengguna tetap bisa simpan manual.
+*/
+async function downloadImageURL(url, filename){
+  try{
+    const res = await fetch(url, { mode:'cors' });
+    if(!res.ok) throw new Error('fetch gagal');
+    const blob = await res.blob();
+    const objUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = objUrl; a.download = filename || 'qr.png';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(objUrl), 4000);
+  }catch(e){
+    window.open(url, '_blank');
+  }
+}
