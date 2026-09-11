@@ -319,3 +319,56 @@ a{color:var(--lantern);}
   #printArea, #printArea *{visibility:visible;}
   #printArea{position:absolute;top:0;left:0;width:100%;}
 }
+
+/* ---------- icons ---------- */
+[data-lucide]{stroke:currentColor;flex:none;}
+.ic-btn{background:none;border:none;color:inherit;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0;}
+.ic-circle{width:40px;height:40px;border-radius:12px;background:var(--ink-3);display:flex;align-items:center;justify-content:center;color:var(--lantern);flex:none;}
+
+/* ---------- ratings ---------- */
+.stars{display:inline-flex;gap:1px;align-items:center;}
+.rating-badge{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:var(--text);}
+.rating-badge.muted{color:var(--text-faint);font-weight:500;}
+.rate-picker{display:flex;justify-content:center;gap:10px;margin:14px 0;}
+.rate-picker button{background:none;border:none;cursor:pointer;color:var(--text-faint);padding:4px;}
+.rate-picker button.active{color:var(--lantern);}
+
+/* ---------- bottom nav (pembeli: 2 tab) ---------- */
+.tabbar-2 button{flex:1;}
+
+/* ---------- order status hero (gabungan struk + lacak) ---------- */
+.status-hero{
+  text-align:center;padding:30px 20px 24px;border-radius:var(--radius-lg);
+  background:linear-gradient(160deg, var(--ink-3), var(--ink-2));border:1px solid var(--line);margin-bottom:14px;
+}
+.status-hero .status-ic{
+  width:72px;height:72px;border-radius:50%;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;
+}
+.status-hero .status-ic.st-pending{background:rgba(255,159,28,.16);color:var(--lantern);}
+.status-hero .status-ic.st-diproses{background:rgba(61,220,151,.16);color:var(--leaf);}
+.status-hero .status-ic.st-diantar{background:rgba(255,184,77,.18);color:var(--accent);}
+.status-hero .status-ic.st-selesai{background:rgba(61,220,151,.2);color:var(--leaf);}
+.status-hero .status-ic.st-dibatalkan{background:rgba(239,90,76,.16);color:var(--chili);}
+.status-hero h2{font-size:19px;}
+.status-hero p{color:var(--text-dim);font-size:13px;margin-top:4px;}
+
+/* ---------- wallet compatibility row ---------- */
+.wallet-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 14px;background:var(--ink-3);border-radius:12px;font-size:11.5px;color:var(--text-dim);margin-top:2px;}
+.wallet-chip{background:var(--ink-4);padding:4px 9px;border-radius:7px;font-weight:700;font-size:11px;color:var(--text);}
+
+/* ---------- location badge ---------- */
+.loc-badge{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--leaf);background:rgba(61,220,151,.1);padding:6px 12px;border-radius:999px;}
+
+/* ---------- edit menu inline form ---------- */
+.edit-panel{background:var(--ink-3);border:1px solid var(--line-strong);border-radius:var(--radius-sm);padding:14px;margin-top:10px;}
+
+/* ---------- category chip with icon ---------- */
+.chip{display:inline-flex;align-items:center;gap:6px;}
+
+/* ---------- order list card ---------- */
+.order-list-card{display:flex;gap:12px;align-items:center;background:var(--ink-2);border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-bottom:12px;cursor:pointer;}
+.order-list-card .ol-ic{width:42px;height:42px;border-radius:12px;background:var(--ink-3);display:flex;align-items:center;justify-content:center;flex:none;}
+.order-list-card .ol-info{flex:1;min-width:0;}
+.order-list-card .ol-info h3{font-size:14px;margin-bottom:2px;}
+.badge-dibatalkan{background:rgba(239,90,76,.14);color:var(--chili);}
+
