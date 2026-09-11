@@ -1,7 +1,7 @@
 /*
   app.js (web pembeli)
   --------------------
-  Karena web ini sekarang berdiri sendiri, halamannya cuma seputar alur beli.
+  Karena web ini berdiri sendiri, halamannya cuma seputar alur beli.
   Harus dimuat PALING TERAKHIR di index.html.
 */
 
@@ -11,7 +11,8 @@ let state = {
   storeId: null,
   storeName: null,
   cart: {},
-  lastOrderId: null,
+  orderId: null,
+  location: null,
   trackInterval: null,
 };
 
@@ -29,21 +30,45 @@ function go(view, extra){
 function render(){
   const app = document.getElementById('app');
   if(state.view === 'cust-table') app.innerHTML = viewCustTable();
-  else app.innerHTML = '<div class="content">Memuat…</div>';
+  else app.innerHTML = '<div class="content"><div class="empty">Memuat…</div></div>';
+  mountIcons();
 
   if(state.view === 'cust-stores') renderCustStores();
   else if(state.view === 'cust-menu') renderCustMenu();
   else if(state.view === 'cust-cart') renderCustCart();
   else if(state.view === 'cust-checkout') renderCustCheckout();
-  else if(state.view === 'cust-receipt') renderCustReceipt();
-  else if(state.view === 'cust-track') renderCustTrack();
+  else if(state.view === 'cust-order') renderCustOrder();
+  else if(state.view === 'cust-orders') renderCustOrdersList();
+  else mountIcons();
 }
 
 /* ---------- nyalakan aplikasi ---------- */
 (async function init(){
   const params = new URLSearchParams(location.search);
   const t = params.get('table');
-  // QR di meja membawa parameter ?table=N -> langsung loncat ke daftar toko.
-  if(t){ go('cust-stores', {table:t}); return; }
-  render(); // tidak ada param -> tampilkan input nomor meja manual
+
+  // Kalau ada pesanan yang masih berjalan di HP ini, langsung buka layar
+  // status-nya -- jangan lempar balik ke halaman input nomor meja.
+  const activeId = getActiveOrderId();
+  if(activeId){
+    const order = await sGet('order:' + activeId, true);
+    if(order && order.status !== 'selesai' && order.status !== 'dibatalkan'){
+      go('cust-order', {orderId: activeId, table: order.table});
+      return;
+    } else {
+      clearActiveOrder();
+    }
+  }
+
+  if(t){
+    localStorage.setItem('lapak_table', t);
+    go('cust-stores', {table:t});
+    return;
+  }
+  const savedTable = localStorage.getItem('lapak_table');
+  if(savedTable){
+    go('cust-stores', {table:savedTable});
+    return;
+  }
+  render();
 })();
